@@ -1,0 +1,90 @@
+---
+title: "Lab 12"
+author: "Shawn Santo"
+date: "11/25/19"
+output: 
+  html_document:
+    css: lab12.css
+    toc: true
+    number_sections: false
+    toc_float: true
+    df_print: paged
+    keep_md: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      eval = TRUE,
+                      message = FALSE, 
+                      warning = FALSE,
+                      comment = NA,
+                      fig.width=8, 
+                      fig.height=6)
+```
+
+## Packages
+
+```{r}
+library(sparklyr)
+library(tidyverse)
+library(wordcloud)
+```
+
+## Introduction
+
+As we have seen, `sparklyr` provides an interface for Spark and gives us
+the ability to perform data manipulation, Spark SQL queries, and access Spark's
+machine learning library. Package `sparklyr` can also facilitate text mining
+through Spark. See https://spark.rstudio.com/guides/textmining/ as a reference
+for this lab.
+
+Package `sparklyr` allows you to read in text data and perform a number of
+feature transformations on said data.
+
+To get started, create a spark connection with 2 cores. Depending on where you
+are working you may need to set the argument `spark_home`. Saxon has an
+instance of Spark installed under `/data`. Spark is not installed on Trig2.
+
+```{r eval=FALSE}
+sc <- spark_connect(master = "local[2]")
+```
+
+## Document processing
+
+Select one of the documents below for this lab. You will need to 
+download it (`download.file()`),
+extract the text (if it is an html or htm document, maybe use `rvest`), 
+and save it in your working directory as a `.txt` file.
+
+<b>
+Abraham Lincoln <br/>
+Gettysburg Address <br/>
+November 19, 1863, Address Delivered at the Dedication of the Cemetery at Gettysburg<br/>
+</b>
+https://www.d.umn.edu/~rmaclin/gettysburg-address.html
+
+<b>
+Dr. Martin Luther King Jr.<br/>
+I have a dream speech<br/>
+August 28, 1963, Lincoln Memorial in Washington D.C.<br/>
+</b>
+http://www.analytictech.com/mb021/mlk.htm
+
+<b>
+Theodore J. Kaczynski aka Unabomber<br/>
+Manifesto<br/>
+September 19, 1995, The Washington Post<br/>
+</b>
+https://www.josharcher.uk/static/files/2018/01/Industrial_Society_and_Its_Future-Ted_Kaczynski.txt
+
+## Word cloud
+
+Create a tidy text data frame based on your selected document. The data
+frame should have the document's words and their counts. 
+This can then be used to create a word cloud with package `wordcloud`. 
+Work with `sparklyr`'s functions (`spark_read_text()`, `ft_*()`, etc)
+to perform this text mining and cleaning. 
+See https://spark.rstudio.com/guides/textmining/ for
+reference as to what is available and how to handle regular expressions.
+Remember to remove punctuation, numbers, and stop words.
+
